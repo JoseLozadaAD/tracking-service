@@ -24,3 +24,11 @@ export const addFeedbackToTraineeRepository = async (moduleId: string, traineeId
 export const findTraineeByIdRepository = async (moduleId: string, traineeId: string): Promise<Trainee|null> => {
   return ModuleModel.findById(moduleId, { trainees: { $elemMatch: { id: traineeId } } });
 };
+
+export const setGradeToTraineeRepository = async (moduleId: string, traineeId: string, grade: number): Promise<Module|undefined> => {
+  const module = await findModuleByIdRepository(moduleId);
+  const trainee = module?.trainees?.find((trainee: Trainee) => trainee.id === traineeId);
+
+  trainee!.grade = grade;
+  return module?.save();
+};

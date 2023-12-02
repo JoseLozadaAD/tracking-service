@@ -1,30 +1,40 @@
 import { Request, Response, NextFunction } from 'express';
-import { object, string, number, date, ValidationError } from 'yup';
+import { moduleSchema, traineeSchema, feedbackSchema } from '../types/schemas';
+import z from 'zod';
 
-export const validateModuleData = async (req: Request, res: Response, next: NextFunction) => {
-  const schema = object({
-    id: number().optional().nullable(),
-    name: string().required(),
-    description: string().required(),
-    trainerId: number().required().strict(),
-    trainees: string().optional().nullable(),
-    startDate: date().required(),
-    endDate: date().required(),
-    schedule: string().required()
-  });
-
+export const validateData = async<T> (schema: z.ZodSchema<T>, req: Request, res: Response, next: NextFunction) => {
   try {
-    await schema.validate(req.body, { abortEarly: false });
-    next();
+    const validatedData = await schema.parseAsync(req.body);
+    return validatedData;
   } catch (error) {
-    if (error instanceof ValidationError){
+    if (error instanceof z.ZodError){
       return next(error);
     }
-
-    if (error instanceof Error){
+    if (error instanceof Error) {
       return next(error);
     }
 
     return next({ status: 500, message: 'Server unknown issue' });
+  }
+};
+
+export const validateModuleData = async (req: Request, res: Response, next: NextFunction) => {
+  await validateData(moduleSchema, req, res, next);
+  if (!res.writableEnded) {
+    next();
+  }
+};
+
+export const validateTraineeData = async (req: Request, res: Response, next: NextFunction) => {
+  await validateData(traineeSchema, req, res, next);
+  if (!res.writableEnded) {
+    next();
+  }
+};
+
+export const validateFeedbackData = async (req: Request, res: Response, next: NextFunction) => {
+  await validateData(feedbackSchema, req, res, next);
+  if (!res.writableEnded) {
+    next();
   }
 };
