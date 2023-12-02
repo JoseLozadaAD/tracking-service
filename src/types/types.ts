@@ -24,3 +24,11 @@ export interface Module extends Document {
   endDate: Date,
   schedule: string
 }
+
+export interface ErrorResponse {
+  statusCode: number,
+  message: string,
+  name: string,
+  stack?: string,
+  json: object
+}
