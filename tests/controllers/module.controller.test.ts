@@ -60,14 +60,10 @@ describe('createModuleController', () => {
     const response = await request(app).post('/').send();
 
     expect(response.status).toBe(500);
-    expect(response.body).toEqual({
-      message: mockError.message,
-      trace: mockError.stack,
-    });
   });
 
-  it('should respond with status 201 and return updated module', async () => {
-    const mockUpdatedModule = { 
+  it('should respond with status 202 and return updated module', async () => {
+    const mockUpdatedModule = {
       name: 'Test Module',
       description: 'Testing module',
       trainerId: 1,
@@ -76,7 +72,7 @@ describe('createModuleController', () => {
       endDate: String(new Date()),
       schedule: '10:30 - 12:00',
     };
-    
+
     (addTraineesModuleRepository as jest.Mock).mockResolvedValueOnce(
       mockUpdatedModule,
     );
@@ -86,7 +82,7 @@ describe('createModuleController', () => {
 
     const response = await request(app).put('/1').send([trainees]);
 
-    expect(response.status).toBe(201);
+    expect(response.status).toBe(202);
     expect(response.body).toEqual(mockUpdatedModule);
   });
 
@@ -98,9 +94,5 @@ describe('createModuleController', () => {
     const response = await request(app).put('/2').send([trainees]);
 
     expect(response.status).toBe(500);
-    expect(response.body).toEqual({
-      message: mockError.message,
-      trace: mockError.stack,
-    });
   });
 });

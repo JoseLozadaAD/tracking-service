@@ -18,11 +18,13 @@ export const validateModuleData = async (req: Request, res: Response, next: Next
     next();
   } catch (error) {
     if (error instanceof ValidationError){
-      return res.status(400).json({ message: error.message });
+      return next(error);
     }
+
     if (error instanceof Error){
-      return res.status(500).json({ message: error.message });
+      return next(error);
     }
-    return res.status(500).json({ message: 'Server unknown issue' });
+
+    return next({ status: 500, message: 'Server unknown issue' });
   }
 };

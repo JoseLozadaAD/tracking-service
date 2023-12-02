@@ -1,7 +1,7 @@
 import {
-  createModuleRepository, 
+  createModuleRepository,
   addTraineesModuleRepository,
-  findModuleByIdRepository 
+  findModuleByIdRepository
 } from '../../src/repositories/module.repository';
 import { Module } from '../../src/types/types';
 import ModuleModel from '../../src/models/module';
@@ -54,7 +54,7 @@ describe('createModuleRepository', () => {
         name: 'Juan',
         lastName: 'Mamani',
         email: 'juan.mamani@example.com',
-        grade: 90,
+        grade: 90
       }]
     };
 
