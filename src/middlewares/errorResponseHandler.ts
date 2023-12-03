@@ -2,7 +2,7 @@
 import { ErrorRequestHandler, NextFunction } from 'express';
 import { IssueData } from 'zod';
 
-const errorRespondHandler: ErrorRequestHandler = (
+const errorResponseHandler: ErrorRequestHandler = (
   error,
   request,
   response,
@@ -30,4 +30,4 @@ const errorRespondHandler: ErrorRequestHandler = (
   });
 };
 
-export default errorRespondHandler;
+export default errorResponseHandler;
